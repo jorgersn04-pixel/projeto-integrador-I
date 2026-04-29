@@ -1,28 +1,34 @@
 import mysql.connector
+from mysql.connector import Error
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
-class Database:
-    def __init__(self):
-        self.host = "localhost"
-        self.user = "root"
-        self.password = "SUA_SENHA"
-        self.database = "helpdesk_db"
-        self.conexao = None
+def conectar():
+    """Estabelece a conexão com o banco de dados de forma portátil."""
+    try:
+        conexao = mysql.connector.connect(
+            host=os.getenv('DB_HOST'),
+            port=os.getenv('DB_PORT', '3306'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASS'),
+            database=os.getenv('DB_NAME')
+        )
+        if conexao.is_connected():
+            return conexao
+    except Error as e:
+        print(f"\n❌ Falha Crítica: Não foi possível conectar ao servidor MySQL.")
+        print(f"👉 Verifique se o arquivo .env está correto e se você tem acesso à rede.")
+        print(f"Detalhe técnico: {e}")
+        return None
 
-    def conectar(self):
-        try:
-            self.conexao = mysql.connector.connect(
-                host=self.host,
-                user=self.user,
-                password=self.password,
-                database=self.database,
-                charset="utf8"
-            )
-            return self.conexao
-        except mysql.connector.Error as erro:
-            print(f"Erro ao conectar ao banco: {erro}")
-            return None
-
-    def desconectar(self):
-        if self.conexao and self.conexao.is_connected():
-            self.conexao.close()
+def fechar_conexao(conexao, cursor):
+    """Garante o encerramento seguro e liberação de memória."""
+    try:
+        if cursor is not None:
+            cursor.close()
+        if conexao is not None and conexao.is_connected():
+            conexao.close()
+    except Exception:
+        pass
