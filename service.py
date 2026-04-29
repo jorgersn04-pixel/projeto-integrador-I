@@ -1,0 +1,122 @@
+
+from database import conectar, fechar_conexao
+import mysql.connector
+
+
+def cadastrar_usuario(nome, email, perfil):
+    conexao = conectar()
+    if not conexao: return False
+
+    cursor = conexao.cursor()
+    sql = "INSERT INTO usuarios (nome, email, perfil) VALUES (%s, %s, %s)"
+
+    try:
+        cursor.execute(sql, (nome, email, perfil))
+        conexao.commit()
+        print(f"\n✅ Sucesso: Usuário '{nome}' cadastrado com ID {cursor.lastrowid}.")
+        return True
+    except mysql.connector.IntegrityError:
+        print(f"\n❌ Erro de Integridade: O e-mail '{email}' já está em uso no sistema!")
+        return False
+    except Exception as e:
+        print(f"\n❌ Erro interno ao cadastrar: {e}")
+        return False
+    finally:
+        fechar_conexao(conexao, cursor)
+
+
+def listar_usuarios():
+    conexao = conectar()
+    if not conexao: return []
+
+    cursor = conexao.cursor(dictionary=True)
+    try:
+        cursor.execute("SELECT id_usuario, nome, perfil FROM usuarios")
+        return cursor.fetchall()
+    except Exception:
+        return []
+    finally:
+        fechar_conexao(conexao, cursor)
+
+
+def calcular_prioridade(urgencia, impacto):
+    """Regra de negócio determinística exigida pelo Documento de Visão."""
+    pontuacao = urgencia + impacto
+    if pontuacao >= 5:
+        return 'Alta'
+    elif pontuacao >= 3:
+        return 'Média'
+    else:
+        return 'Baixa'
+
+
+def abrir_chamado(id_solicitante, categoria, descricao, urgencia, impacto):
+    conexao = conectar()
+    if not conexao: return False
+
+    cursor = conexao.cursor()
+    prioridade = calcular_prioridade(urgencia, impacto)
+
+    sql = """
+        INSERT INTO solicitacoes 
+        (id_solicitante, categoria, descricao, fator_urgencia, fator_impacto, prioridade) 
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """
+    try:
+        cursor.execute(sql, (id_solicitante, categoria, descricao, urgencia, impacto, prioridade))
+        conexao.commit()
+        print(f"\n✅ Chamado #{cursor.lastrowid} aberto com sucesso! Prioridade gerada: {prioridade}")
+        return True
+    except Exception as e:
+        print(f"\n❌ Erro interno ao registrar solicitação: {e}")
+        return False
+    finally:
+        fechar_conexao(conexao, cursor)
+
+
+def listar_chamados():
+    conexao = conectar()
+    if not conexao: return []
+
+    cursor = conexao.cursor(dictionary=True)
+    sql = """
+        SELECT s.id_solicitacao, u.nome, s.categoria, s.prioridade, s.status 
+        FROM solicitacoes s
+        JOIN usuarios u ON s.id_solicitante = u.id_usuario
+        ORDER BY FIELD(s.status, 'Aberta', 'Em andamento', 'Fechada'), id_solicitacao DESC
+    """
+    try:
+        cursor.execute(sql)
+        return cursor.fetchall()
+    except Exception:
+        return []
+    finally:
+        fechar_conexao(conexao, cursor)
+
+
+def atualizar_status(id_chamado, novo_status):
+    conexao = conectar()
+    if not conexao: return False
+
+    cursor = conexao.cursor(dictionary=True)
+    try:
+        cursor.execute("SELECT status FROM solicitacoes WHERE id_solicitacao = %s", (id_chamado,))
+        chamado = cursor.fetchone()
+
+        if not chamado:
+            print("\n❌ Erro: O ID fornecido não consta na base de dados.")
+            return False
+
+        if chamado['status'] == 'Fechada':
+            print("\n❌ Bloqueio de Segurança: Não é permitido alterar um chamado já encerrado.")
+            return False
+
+        cursor.execute("UPDATE solicitacoes SET status = %s WHERE id_solicitacao = %s", (novo_status, id_chamado))
+        conexao.commit()
+        print(f"\n✅ Status do chamado #{id_chamado} atualizado para '{novo_status}'.")
+        return True
+    except Exception as e:
+        print(f"\n❌ Erro interno ao atualizar: {e}")
+        return False
+    finally:
+        fechar_conexao(conexao, cursor)
