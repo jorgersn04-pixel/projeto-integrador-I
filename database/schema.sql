@@ -1,20 +1,9 @@
--- ==============================================================================
--- Projeto Integrador 1 - SCSC
--- Aluno: Jorge Rodrigues dos Santos Neto
--- Script de Criação e Povoamento do Banco de Dados (DDL + DML)
--- ==============================================================================
-
--- 1. Aponta para o seu schema do servidor da faculdade
 USE BD240226114;
-
--- 2. Limpeza prévia (Se rodar o script 2x, ele não dá erro)
+limpeza
 DROP TABLE IF EXISTS solicitacoes;
 DROP TABLE IF EXISTS usuarios;
 
--- ==============================================================================
--- ESTRUTURA (DDL)
--- ==============================================================================
-
+estrutura banco
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -35,9 +24,7 @@ CREATE TABLE solicitacoes (
     FOREIGN KEY (id_solicitante) REFERENCES usuarios(id_usuario)
 );
 
--- ==============================================================================
--- DADOS PARA O TESTE DO PROFESSOR (DML)
--- ==============================================================================
+populamento
 
 INSERT INTO usuarios (nome, email, perfil) VALUES
 ('Ana Silva', 'ana.silva@empresa.com', 'solicitante'),
