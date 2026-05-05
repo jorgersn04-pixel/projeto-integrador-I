@@ -18,8 +18,8 @@ def conectar():
         if conexao.is_connected():
             return conexao
     except Error as e:
-        print(f"\n❌ Falha Crítica: Não foi possível conectar ao servidor MySQL.")
-        print(f"👉 Verifique se o arquivo .env está correto e se você tem acesso à rede.")
+        print(f"\n Falha Crítica: Não foi possível conectar ao servidor MySQL.")
+        print(f" Verifique se o arquivo .env está correto e se você tem acesso à rede.")
         print(f"Detalhe técnico: {e}")
         return None
 
