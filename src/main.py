@@ -16,11 +16,11 @@ def ler_nome(mensagem):
     while True:
         nome = input(mensagem).strip()
         if len(nome) < 3:
-            print("❌ O nome é muito curto. Digite um nome completo válido.")
+            print(" O nome é muito curto. Digite um nome completo válido.")
             continue
         if re.match(padrao_nome, nome):
             return nome.title()
-        print("❌ Formato Inválido! O nome deve conter APENAS letras e espaços.")
+        print(" Formato Inválido! O nome deve conter APENAS letras e espaços.")
 
 
 def ler_email(mensagem):
@@ -29,7 +29,7 @@ def ler_email(mensagem):
         email = input(mensagem).strip().lower()
         if re.match(padrao_email, email):
             return email
-        print("❌ E-mail Inválido! Use o formato corporativo: nome@empresa.com")
+        print(" E-mail Inválido! Use o formato corporativo: nome@empresa.com")
 
 
 def ler_inteiro(mensagem, min_val=None, max_val=None):
@@ -37,21 +37,21 @@ def ler_inteiro(mensagem, min_val=None, max_val=None):
         try:
             valor = int(input(mensagem).strip())
             if min_val is not None and valor < min_val:
-                print(f"❌ Valor mínimo permitido: {min_val}.")
+                print(f" Valor mínimo permitido: {min_val}.")
                 continue
             if max_val is not None and valor > max_val:
-                print(f"❌ Valor máximo permitido: {max_val}.")
+                print(f" Valor máximo permitido: {max_val}.")
                 continue
             return valor
         except ValueError:
-            print("❌ Entrada inválida! Digite APENAS números inteiros.")
+            print(" Entrada inválida! Digite APENAS números inteiros.")
 
 
 def ler_texto_livre(mensagem, min_chars=5):
     while True:
         texto = input(mensagem).strip()
         if len(texto) < min_chars:
-            print(f"❌ Muito curto! Digite no mínimo {min_chars} caracteres.")
+            print(f" Muito curto! Digite no mínimo {min_chars} caracteres.")
         else:
             return texto
 
@@ -61,7 +61,7 @@ def ler_id_valido(mensagem, lista_ids_validos, nome_entidade="ID"):
         id_digitado = ler_inteiro(mensagem)
         if id_digitado in lista_ids_validos:
             return id_digitado
-        print(f"❌ {nome_entidade} inexistente! Escolha um ID válido listado acima.")
+        print(f" {nome_entidade} inexistente! Escolha um ID válido listado acima.")
 
 
 # ==============================================================================
@@ -71,7 +71,7 @@ def ler_id_valido(mensagem, lista_ids_validos, nome_entidade="ID"):
 def exibir_menu():
     limpar_tela()
     print("=" * 55)
-    print(" 🏢 SCSC - SISTEMA DE HELPDESK CORPORATIVO ")
+    print("  SCSC - SISTEMA DE HELPDESK CORPORATIVO ")
     print("=" * 55)
     print(" 1. Cadastrar Novo Funcionário")
     print(" 2. Abrir Nova Solicitação (Chamado)")
@@ -79,7 +79,7 @@ def exibir_menu():
     print(" 4. Atualizar Status de Solicitação")
     print(" 0. Encerrar o Sistema")
     print("=" * 55)
-    return ler_inteiro("👉 Escolha uma opção: ", 0, 4)
+    return ler_inteiro(" Escolha uma opção: ", 0, 4)
 
 
 def main():
@@ -88,7 +88,7 @@ def main():
 
         if opcao == 1:
             limpar_tela()
-            print("--- 👤 CADASTRO DE NOVO FUNCIONÁRIO ---\n")
+            print("---  CADASTRO DE NOVO FUNCIONÁRIO ---\n")
 
             nome = ler_nome("Nome completo: ")
             email = ler_email("E-mail corporativo: ")
@@ -106,11 +106,11 @@ def main():
 
         elif opcao == 2:
             limpar_tela()
-            print("--- 📝 ABERTURA DE NOVA SOLICITAÇÃO ---\n")
+            print("---  ABERTURA DE NOVA SOLICITAÇÃO ---\n")
 
             usuarios = services.listar_usuarios()
             if not usuarios:
-                print("⚠️  Não há funcionários cadastrados no banco de dados.")
+                print("  Não há funcionários cadastrados no banco de dados.")
                 print("Cadastre um funcionário primeiro para vincular o chamado.")
                 pausar()
                 continue
@@ -137,7 +137,7 @@ def main():
 
         elif opcao == 3:
             limpar_tela()
-            print("--- 📊 PAINEL DE CONSULTA ---\n")
+            print("---  PAINEL DE CONSULTA ---\n")
             chamados = services.listar_chamados()
 
             if not chamados:
@@ -152,11 +152,11 @@ def main():
 
         elif opcao == 4:
             limpar_tela()
-            print("--- 🔄 ATUALIZAÇÃO DE STATUS ---\n")
+            print("---  ATUALIZAÇÃO DE STATUS ---\n")
 
             chamados = services.listar_chamados()
             if not chamados:
-                print("⚠️  Não há chamados abertos para atualizar.")
+                print("  Não há chamados abertos para atualizar.")
                 pausar()
                 continue
 
