@@ -9,6 +9,10 @@ if usuario is None:
 
 else:
 
+    print("\n" + "=" * 40)
+    print("SCSC".center(40))
+    print("=" * 40)
+
     print(
         f"\nBem-vindo {usuario['nome']}"
     )
@@ -17,12 +21,22 @@ else:
 
         print("\n===== MENU =====")
 
+        # =================================
+        # SOLICITANTE
+        # =================================
+
         if usuario["perfil"] == "solicitante":
+
             print("1 - Abrir solicitação")
             print("2 - Minhas solicitações")
             print("0 - Sair")
 
+        # =================================
+        # OPERADOR
+        # =================================
+
         elif usuario["perfil"] == "operador":
+
             print("1 - Cadastrar usuário")
             print("2 - Abrir solicitação")
             print("3 - Listar solicitações")
@@ -30,7 +44,12 @@ else:
             print("5 - Estatísticas")
             print("0 - Sair")
 
+        # =================================
+        # TÉCNICO
+        # =================================
+
         elif usuario["perfil"] == "tecnico":
+
             print("1 - Minhas solicitações")
             print("2 - Atualizar status")
             print("0 - Sair")
