@@ -1,6 +1,5 @@
 from services import *
 
-
 usuario = login()
 
 if usuario is None:
@@ -42,6 +41,8 @@ else:
             print("3 - Listar solicitações")
             print("4 - Atribuir técnico")
             print("5 - Estatísticas")
+            print("6 - Deletar usuário")
+            print("7 - Deletar chamado")
             print("0 - Sair")
 
         # =================================
@@ -98,6 +99,12 @@ else:
 
                 case "5":
                     estatisticas()
+
+                case "6":
+                    deletar_usuario()
+
+                case "7":
+                    deletar_solicitacao()
 
                 case "0":
                     break
