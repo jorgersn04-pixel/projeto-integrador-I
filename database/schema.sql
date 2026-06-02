@@ -1,7 +1,3 @@
-CREATE DATABASE IF NOT EXISTS projetoIntegrador;
-
-USE projetoIntegrador;
-
 DROP TABLE IF EXISTS solicitacoes;
 DROP TABLE IF EXISTS usuarios;
 
