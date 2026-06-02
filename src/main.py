@@ -72,7 +72,7 @@ else:
                     minhas_solicitacoes(usuario)
 
                 case "0":
-                    break
+                    login()
 
                 case _:
                     print("\nOpção inválida")
@@ -107,7 +107,7 @@ else:
                     deletar_solicitacao()
 
                 case "0":
-                    break
+                    login()
 
                 case _:
                     print("\nOpção inválida")
@@ -127,7 +127,7 @@ else:
                     atualizar_status(usuario)
 
                 case "0":
-                    break
+                    login()
 
                 case _:
                     print("\nOpção inválida")
