@@ -38,7 +38,7 @@ def login():
         entrada_id = input("\nDigite seu ID: ").strip()
 
         
-
+        
         if not entrada_id:
             print("\n[Erro] O ID não pode ficar vazio.")
             continue
