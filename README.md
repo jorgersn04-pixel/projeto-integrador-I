@@ -1,3 +1,10 @@
+## Integrantes
+
+* Jorge Rodrigues dos Santos Neto
+* Pablo André Valentim
+* Natã Ribeiro Carvalho
+
+
 # SCSC - Sistema de Controle de Solicitações Corporativas
 
 ## Descrição
